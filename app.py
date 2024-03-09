@@ -9,7 +9,7 @@
 # st.subheader('De-identified')
 
 import streamlit as st
-from transformers import pipeline, AutoTokenizer, AutoModelForMaskedLM
+from transformers import AutoTokenizer, AutoModelForMaskedLM
 
 def mask_text(input_text):
     model_name = "bert-base-uncased"
