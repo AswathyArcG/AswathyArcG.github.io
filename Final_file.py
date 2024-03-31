@@ -33,7 +33,7 @@ with open("conlleval.py", "wb") as f:
 import os
 
 os.environ["KERAS_BACKEND"] = "tensorflow"
-
+import streamlit as st
 import os
 import keras
 import numpy as np
@@ -137,8 +137,11 @@ class NERModel(keras.Model):
 
 # In[7]:
 
+@st.cache_data
+def load_data(dataset):
+    return load_dataset("conll2003")
 
-conll_data = load_dataset("conll2003")
+conll_data = load_data("conll2003")
 
 
 # In[8]:
@@ -166,14 +169,15 @@ csv_file_path = "conll_data.csv"
 #*****************************My code********************
 
 # Create a temporary file to save the CSV data
-import streamlit as st
+
 
 # Function to download the CSV file
+@st.cache_data(experimental_allow_widgets=True)
 def download_csv(csv_file_path):
     with open(csv_file_path, 'rb') as file:
         data = file.read()
     # Wrap the download button inside a div with style="display: none;"
-    st.markdown("<div style='display: none;'>", unsafe_allow_html=True)
+    st.markdown("<div style='display: None;'>", unsafe_allow_html=True)
     st.download_button(label="Download CSV", data=data, file_name='data.csv', mime='text/csv')
     st.markdown("</div>", unsafe_allow_html=True)
     
@@ -239,10 +243,10 @@ top_10_labels = label_counts.head(10)
 
 # In[9]:
 
-
-def export_to_file(export_file_path, data):
+@st.cache_resource
+def export_to_file(export_file_path, _data):
     with open(export_file_path, "w") as f:
-        for record in data:
+        for record in _data:
             ner_tags = record["ner_tags"]
             tokens = record["tokens"]
             if len(tokens) > 0:
@@ -395,11 +399,11 @@ print(prediction)
 
 # In[17]:
 
-
-def calculate_metrics(dataset):
+@st.cache_data
+def calculate_metrics(_dataset):
     all_true_tag_ids, all_predicted_tag_ids = [], []
 
-    for x, y in dataset:
+    for x, y in _dataset:
         output = ner_model.predict(x, verbose=0)
         predictions = np.argmax(output, axis=-1)
         predictions = np.reshape(predictions, [-1])
@@ -427,8 +431,8 @@ calculate_metrics(val_dataset)
 
 # In[18]:
 
-
-def test_model_with_input(ner_model, mapping):
+@st.cache_resource
+def test_model_with_input(_ner_model, mapping):
     # Get input sentence from user
     input_sentence = "My name is Karishma Shirsath. I live in Toronto Canada."
 
@@ -437,7 +441,7 @@ def test_model_with_input(ner_model, mapping):
     sample_input = tf.reshape(sample_input, shape=[1, -1])
 
     # Predict tags using the trained model
-    output = ner_model.predict(sample_input)
+    output = _ner_model.predict(sample_input)
     predictions = np.argmax(output, axis=-1)[0]
     predicted_tags = [mapping[i] for i in predictions]
 

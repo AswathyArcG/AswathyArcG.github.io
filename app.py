@@ -15,7 +15,7 @@ def cached_predict_ner_tags(text):
     return FlairRecognizer.predict_ner_tags(text)
 
 # Cache the text analysis function
-@st.cache_data
+@st.cache_resource
 def cached_analyze_text(text):
     return FlairRecognizer.analyze_text(text)
 
