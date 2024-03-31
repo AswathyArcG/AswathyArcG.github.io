@@ -48,7 +48,7 @@ def extract_text_from_pdf(file_contents):
 def create_pdf(text_content):
     pdf = FPDF()
     pdf.add_page()
-    pdf.add_font("DejaVuSans", "", "DejaVuSans.ttf", uni=True)  # Add DejaVuSans font
+    pdf.add_font("DejaVuSans", "", "DejaVuSans.ttf")  # Add DejaVuSans font
     pdf.set_font("DejaVuSans", size=12)
     pdf.multi_cell(0, 10, text=text_content)
     return pdf
