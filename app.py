@@ -1,16 +1,10 @@
 
 import streamlit as st
-from pathlib import Path
 from Final_file import FlairRecognizer
 import os
-import tempfile
 import PyPDF2
 import docx
-import base64
-import pdfplumber
 from io import BytesIO
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
 from fpdf import FPDF
 import io
 from docx import Document
@@ -91,8 +85,6 @@ def main():
             #  Process PDF file
             if uploaded_file.type == 'application/pdf':
                 extracted_text = extract_text_from_pdf(uploaded_file)
-                st.write("extracted text")
-                st.write(extracted_text)  # Display the extracted text
                 if st.button('Analyze'):
                     with st.spinner('Wait for it... the model is loading'):
                         cached_predict_ner_tags(extracted_text)
