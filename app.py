@@ -4,7 +4,7 @@ from Final_file import FlairRecognizer
 import os
 import PyPDF2
 import docx
-from io import BytesIO
+# from io import BytesIO
 from fpdf import FPDF
 import io
 from docx import Document
